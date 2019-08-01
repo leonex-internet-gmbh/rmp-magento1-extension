@@ -81,7 +81,6 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
             'dateOfBirth'          => substr($this->_quote->getCustomerDob(), 0, 10),
             'birthName'            => $address->getLastname(),//$billingAddress->lastname,
             'street'               => $address->getStreet(),
-            'street2'              => $address->getStreet2(), // optional (needed for Packstation)
             'zip'                  => $address->getPostcode(),
             'city'                 => $address->getCity(),
             'country'              => strtolower($address->getCountryId()),
@@ -133,6 +132,11 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     protected function _getCustomerData()
     {
         $customer = $this->_customer;
+        if (!$customer->getId()) {
+            return array(
+                'email' => $this->_billingAddress->getEmail()
+            );
+        }
         return array(
             'number' => $customer->getId(),
             'email' => $customer->getData('email')

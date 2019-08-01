@@ -86,4 +86,13 @@ class Leonex_RiskManagementPlatform_Helper_Data extends Mage_Core_Helper_Abstrac
     {
         return $this->getConfig('leonex_rmp/settings/apikey', false, $store);
     }
+
+    public function getAllowedPaymentMethods($store = null)
+    {
+        $methods = $this->getConfig('leonex_rmp/settings/payment_methods', false, $store);
+        if (!$methods) {
+            return array();
+        }
+        return explode(',', $methods);
+    }
 }
