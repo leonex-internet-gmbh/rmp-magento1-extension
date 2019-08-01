@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Leonex_RiskManagementPlatform>
+            <codePool>local</codePool>
+            <active>true</active>
+            <depends/>
+        </Leonex_RiskManagementPlatform>
+    </modules>
+</config>

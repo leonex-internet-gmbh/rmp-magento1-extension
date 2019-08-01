@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Leonex_RiskManagementPlatform>
+            <version>2.0.0</version>
+        </Leonex_RiskManagementPlatform>
+    </modules>
+
+    <global>
+        <models>
+            <leonex_rmp>
+                <class>Leonex_RiskManagementPlatform_Model</class>
+            </leonex_rmp>
+        </models>
+        <helpers>
+            <leonex_rmp>
+                <class>Leonex_RiskManagementPlatform_Helper</class>
+            </leonex_rmp>
+        </helpers>
+    </global>
+    <frontend>
+        <events>
+            <payment_method_is_active>
+                <observers>
+                    <payment_method_is_available>
+                        <type>singleton</type>
+                        <class>Leonex_RiskManagementPlatform_Model_Observer</class>
+                        <method>isAvailable</method>
+                    </payment_method_is_available>
+                </observers>
+            </payment_method_is_active>
+            <sales_quote_payment_import_data_before>
+                <observers>
+                    <payment_method_is_available_after>
+                        <type>singleton</type>
+                        <class>Leonex_RiskManagementPlatform_Model_Observer</class>
+                        <method>isAvailableAfter</method>
+                    </payment_method_is_available_after>
+                </observers>
+            </sales_quote_payment_import_data_before>
+        </events>
+    </frontend>
+</config>
