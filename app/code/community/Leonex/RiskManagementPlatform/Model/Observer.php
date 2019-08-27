@@ -44,9 +44,9 @@ class Leonex_RiskManagementPlatform_Model_Observer extends Mage_Core_Model_Abstr
             return;
         }
 
-        if($connector->verifyInterest($observer, $checkingTime)
+        if ($connector->verifyInterest($observer, $checkingTime)
             || ($observer->getQuote() !== null)
-            && $connector->verifyInterest($observer, $observer->getQuote()->getData('checking_time'))){
+            && $connector->verifyInterest($observer, $observer->getQuote()->getData('checking_time'))) {
             $result->isAvailable = $connector->checkPaymentPre($observer);
         }
     }

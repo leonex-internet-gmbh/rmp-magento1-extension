@@ -38,48 +38,45 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
      * Check if payment is available
      *
      * @param Varien_Event_Observer $observer
+     *
      * @return bool
      */
-   public function checkPaymentPre(Varien_Event_Observer $observer)
-   {
-       /** @var Varien_Event $event */
-       $event = $observer->getEvent();
+    public function checkPaymentPre(Varien_Event_Observer $observer)
+    {
+        /** @var Varien_Event $event */
+        $event = $observer->getEvent();
 
-       /** @var Leonex_RiskManagementPlatform_Model_Quote_Quote $quote */
-       $quote = Mage::getModel('leonex_rmp/quote_quote', $event->getQuote());
-       $response = false;
+        /** @var Leonex_RiskManagementPlatform_Model_Quote_Quote $quote */
+        $quote = Mage::getModel('leonex_rmp/quote_quote', $event->getQuote());
+        $response = false;
 
-       if ($this->_justifyInterest($quote)) {
-           $content = $quote->getNormalizedQuote();
+        if ($this->_justifyInterest($quote)) {
+            $content = $quote->getNormalizedQuote();
 
-           /** @var Leonex_RiskManagementPlatform_Model_Component_Api $api */
-           $api = Mage::getModel(
-               'leonex_rmp/component_api',
-               array(
-                   'api_url' => $this->_getApiUrl(),
-                   'api_key' => $this->_getApiKey()
-               )
-           );
+            /** @var Leonex_RiskManagementPlatform_Model_Component_Api $api */
+            $api = Mage::getModel('leonex_rmp/component_api', array(
+                    'api_url' => $this->_getApiUrl(), 'api_key' => $this->_getApiKey()
+                ));
 
-           /** @var Leonex_RiskManagementPlatform_Model_Component_Response $response */
-           $response = $api->post($content);
+            /** @var Leonex_RiskManagementPlatform_Model_Component_Response $response */
+            $response = $api->post($content);
 
-           if ($this->useCaching()) {
-               $response->setHash($quote);
-               $this->_storeResponse($response);
-           }
-       }
+            if ($this->useCaching()) {
+                $response->setHash($quote);
+                $this->_storeResponse($response);
+            }
+        }
 
-       if ($this->useCaching()) {
-           $response = $this->_loadResponse($quote->getQuoteHash());
-       }
+        if ($this->useCaching()) {
+            $response = $this->_loadResponse($quote->getQuoteHash());
+        }
 
-       if ($response) {
-           return $response->filterPayment($event->getMethodInstance()->getCode());
-       }
+        if ($response) {
+            return $response->filterPayment($event->getMethodInstance()->getCode());
+        }
 
-       return $event->getResult()->isAvailable;
-   }
+        return $event->getResult()->isAvailable;
+    }
 
     /**
      * Check if it's necessary to check payments.
@@ -89,44 +86,45 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
      *
      * @return bool
      */
-   public function verifyInterest(Varien_Event_Observer $observer, $timeOfChecking)
-   {
-       /** @var Leonex_RiskManagementPlatform_Helper_Data $helper */
-       $helper = Mage::helper('leonex_rmp');
-       $event = $observer->getEvent();
+    public function verifyInterest(Varien_Event_Observer $observer, $timeOfChecking)
+    {
+        /** @var Leonex_RiskManagementPlatform_Helper_Data $helper */
+        $helper = Mage::helper('leonex_rmp');
+        $event = $observer->getEvent();
 
-       if (!Mage::app()->getStore()->isAdmin() && $helper->isActive()) {
-           if ($helper->getTimeOfChecking() == $timeOfChecking) {
-               if ($event->getQuote() instanceof Mage_Sales_Model_Quote) {
-                   if ($event->getResult()->isAvailable) {
-                       return true;
-                   }
-               }
-           }
-       }
+        if (!Mage::app()->getStore()->isAdmin() && $helper->isActive()) {
+            if ($helper->getTimeOfChecking() == $timeOfChecking) {
+                if ($event->getQuote() instanceof Mage_Sales_Model_Quote) {
+                    if ($event->getResult()->isAvailable) {
+                        return true;
+                    }
+                }
+            }
+        }
 
-       return false;
-   }
+        return false;
+    }
 
     /**
      * Get Api-Url from plugin config
      *
      * @return mixed
      */
-   protected function _getApiUrl()
-   {
-       return Mage::helper('leonex_rmp')->getApiUrl();
-   }
+    protected function _getApiUrl()
+    {
+        return Mage::helper('leonex_rmp')->getApiUrl();
+    }
 
     /**
      * Get Api-Key from plugin config
      *
      * @return mixed
      */
-   protected function _getApiKey()
-   {
-       return Mage::helper('leonex_rmp')->getApiKey();
-   }
+    protected function _getApiKey()
+    {
+        return Mage::helper('leonex_rmp')->getApiKey();
+    }
+
     /**
      * Check if the basket and customer data has any changes.
      * If not then load the old response from the session.
@@ -152,12 +150,7 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
     protected function _storeResponse(Leonex_RiskManagementPlatform_Model_Component_Response $response)
     {
         $cache = $this->_getCache();
-        $cache->save(
-            $response->getCleanResponse(),
-            $response->getHash(),
-            array(),
-            60*60*2
-        );
+        $cache->save($response->getCleanResponse(), $response->getHash(), array(), 60 * 60 * 2);
     }
 
     /**
@@ -184,6 +177,7 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
     {
         return Mage::app()->getCache();
     }
+
     protected function useCaching()
     {
         return Mage::helper('leonex_rmp')->useCache();

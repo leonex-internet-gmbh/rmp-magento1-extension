@@ -10,10 +10,10 @@
 class Leonex_RiskManagementPlatform_Model_Quote_Quote
 {
 
-    protected $_gender = array(
-        1 => 'm',
-        2 => 'f'
-    );
+    protected $_gender
+        = array(
+            1 => 'm', 2 => 'f'
+        );
 
     /**
      * @var Mage_Sales_Model_Quote
@@ -67,13 +67,7 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     protected function _normalizeQuote()
     {
         return array(
-            'customerSessionId' => Mage::getSingleton("core/session")->getEncryptedSessionId(),
-            'justifiableInterest'  => Leonex_RiskManagementPlatform_Helper_Connector::JUSTIFIABLE_INTEREST_BUSINESS_INITIATION,
-            'consentClause'        => true,
-            'billingAddress'       => $this->_getBillingAddress(),
-            'quote' => $this->_getQuote(),
-            'customer' => $this->_getCustomerData(),
-            'orderHistory' => $this->_getOrderHistory()
+            'customerSessionId' => Mage::getSingleton("core/session")->getEncryptedSessionId(), 'justifiableInterest' => Leonex_RiskManagementPlatform_Helper_Connector::JUSTIFIABLE_INTEREST_BUSINESS_INITIATION, 'consentClause' => true, 'billingAddress' => $this->_getBillingAddress(), 'quote' => $this->_getQuote(), 'customer' => $this->_getCustomerData(), 'orderHistory' => $this->_getOrderHistory()
         );
     }
 
@@ -87,15 +81,7 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
         $address = $this->_billingAddress;
 
         return array(
-            'gender'               => $this->_gender[$this->_quote->getCustomerGender()],
-            'lastName'             => $address->getLastname(),
-            'firstName'            => $address->getFirstname(),
-            'dateOfBirth'          => substr($this->_quote->getCustomerDob(), 0, 10),
-            'birthName'            => $address->getLastname(),
-            'street'               => $address->getStreet(),
-            'zip'                  => $address->getPostcode(),
-            'city'                 => $address->getCity(),
-            'country'              => strtolower($address->getCountryId()),
+            'gender' => $this->_gender[$this->_quote->getCustomerGender()], 'lastName' => $address->getLastname(), 'firstName' => $address->getFirstname(), 'dateOfBirth' => substr($this->_quote->getCustomerDob(), 0, 10), 'birthName' => $address->getLastname(), 'street' => $address->getStreet(), 'zip' => $address->getPostcode(), 'city' => $address->getCity(), 'country' => strtolower($address->getCountryId()),
         );
     }
 
@@ -108,8 +94,7 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     protected function _getQuote()
     {
         return array(
-            'items' => $this->_getQuoteItems(),
-            'totalAmount' => $this->_quote->getGrandTotal(),
+            'items' => $this->_getQuoteItems(), 'totalAmount' => $this->_quote->getGrandTotal(),
         );
     }
 
@@ -122,14 +107,11 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     {
         $quoteItems = array();
 
-        /** @var Mage_Sales_Model_Quote_Item $item*/
+        /** @var Mage_Sales_Model_Quote_Item $item */
         foreach ($this->_quote->getAllItems() as $item) {
             if ($item->getParentItemId() === null) {
                 $quoteItems[] = array(
-                    'sku' => $item->getSku(),
-                    'quantity' => $item->getQty(),
-                    'price' => (float)$item->getPriceInclTax(),
-                    'rowTotal' => (float)$item->getRowTotal()
+                    'sku' => $item->getSku(), 'quantity' => $item->getQty(), 'price' => (float)$item->getPriceInclTax(), 'rowTotal' => (float)$item->getRowTotal()
                 );
             }
         }
@@ -152,24 +134,22 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
         }
 
         return array(
-            'number' => $customer->getId(),
-            'email' => $customer->getData('email')
+            'number' => $customer->getId(), 'email' => $customer->getData('email')
         );
     }
 
     /**
      * Get the customer history from the quote model.
+     *
      * @return array
      */
     protected function _getOrderHistory()
     {
         return array(
-            'numberOfCanceledOrders' => 0,
-            'numberOfCompletedOrders' => 0,
-            'numberOfUnpaidOrders' => 0,
-            'numberOfOutstandingOrders' => 0,
+            'numberOfCanceledOrders' => 0, 'numberOfCompletedOrders' => 0, 'numberOfUnpaidOrders' => 0, 'numberOfOutstandingOrders' => 0,
         );
     }
+
     /**
      * Create a md5 from the basket and customer to block recurring events.
      *

@@ -2,8 +2,9 @@
 
 /**
  * Class Api
+ *
  * @package LxRmp\Components
- * @author fseeger
+ * @author  fseeger
  */
 class Leonex_RiskManagementPlatform_Model_Component_Api
 {
@@ -27,7 +28,7 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
     /** @var string */
     protected $_apiUrl;
 
-    /** @var resource  */
+    /** @var resource */
     protected $_cURL;
 
     /**
@@ -54,20 +55,21 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      * Call the api with given data and parameters.
      *
      * @param string $method
-     * @param array $data
-     * @param array $params
+     * @param array  $data
+     * @param array  $params
+     *
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function _call( $method = self::METHOD_GET, $data = array(), $params = array())
+    protected function _call($method = self::METHOD_GET, $data = array(), $params = array())
     {
         if (!in_array($method, $this->_validMethods)) {
-            Mage::throwException(new \Exception('Invalid HTTP-Methode: ' . $method));
+            Mage::throwException(new Exception('Invalid HTTP-Methode: ' . $method));
         }
 
         $queryString = '';
         if (!empty($params)) {
-            $queryString = '?'.http_build_query($params);
+            $queryString = '?' . http_build_query($params);
         }
 
         $url = rtrim($this->_apiUrl, '?');
@@ -87,8 +89,9 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      * @param array $params
      *
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
+     * @throws Exception
      */
-    public function get( $params = array())
+    public function get($params = array())
     {
         return $this->_call(self::METHOD_GET, array(), $params);
     }
@@ -100,6 +103,7 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      * @param array $params
      *
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
+     * @throws Exception
      */
     public function post($data = array(), $params = array())
     {
@@ -125,6 +129,7 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      * @param array $params
      *
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
+     * @throws Exception
      */
     public function delete($params = array())
     {
@@ -135,12 +140,13 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      * Return the response from the api-call and implement an event to filter this response.
      *
      * @param $result
+     *
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
      */
     protected function _prepareResponse($result)
     {
         /** @var Leonex_RiskManagementPlatform_Model_Component_Response $response */
-        $response =  Mage::getModel('leonex_rmp/component_response', $result);
+        $response = Mage::getModel('leonex_rmp/component_response', $result);
         return $response;
     }
 }

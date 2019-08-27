@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <config>
     <sections>
-        <leonex_rmp  translate="label" module="leonex_rmp">
+        <leonex_rmp translate="label" module="leonex_rmp">
             <label>Risk Management Platform</label>
             <tab>sales</tab>
             <sort_order>999</sort_order>

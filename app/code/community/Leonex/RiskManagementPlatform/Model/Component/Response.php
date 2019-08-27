@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class Response
  *
@@ -7,29 +8,30 @@
  * Beneath the structuring of the data the class implements a function to filter the payments from the main event.
  *
  * @package LxRmp\Components\Data
- * @author fseeger
+ * @author  fseeger
  */
 class Leonex_RiskManagementPlatform_Model_Component_Response
 {
     /** @var string */
     protected $_status;
 
-    /** @var \stdClass */
+    /** @var stdClass */
     protected $_payments;
 
     /** @var  mixed $_hash */
     protected $_hash;
 
-    /** @var mixed $_response  */
+    /** @var mixed $_response */
     protected $_response;
 
     /**
      * Leonex_RiskManagementPlatform_Model_Component_Response constructor.
+     *
      * @param $response
      */
     public function __construct(
         $response
-    ){
+    ) {
         $this->_response = $response;
         $response = json_decode($response);
         $this->_status = $response->status;

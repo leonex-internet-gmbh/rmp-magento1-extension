@@ -11,9 +11,11 @@ class Leonex_RiskManagementPlatform_Helper_Data extends Mage_Core_Helper_Abstrac
 {
     /**
      * Return store config value for key
-     * @param   null|int|Mage_Core_Model_Store $store
-     * @param   bool $flag
-     * @param   string $key
+     *
+     * @param null|int|Mage_Core_Model_Store $store
+     * @param bool                           $flag
+     * @param string                         $key
+     *
      * @return  string
      */
     public function getConfig($key, $flag = false, $store = null)
@@ -34,7 +36,7 @@ class Leonex_RiskManagementPlatform_Helper_Data extends Mage_Core_Helper_Abstrac
      */
     public function isActive($store = null)
     {
-        return (bool) $this->getConfig('leonex_rmp/settings/is_active', true, $store);
+        return (bool)$this->getConfig('leonex_rmp/settings/is_active', true, $store);
     }
 
     /**
@@ -46,7 +48,7 @@ class Leonex_RiskManagementPlatform_Helper_Data extends Mage_Core_Helper_Abstrac
      */
     public function useCache($store = null)
     {
-        return (bool) $this->getConfig('leonex_rmp/settings/enable_cache', true, $store);
+        return (bool)$this->getConfig('leonex_rmp/settings/enable_cache', true, $store);
     }
 
     /**
