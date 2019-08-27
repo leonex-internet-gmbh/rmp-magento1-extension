@@ -49,7 +49,7 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
        $quote = Mage::getModel('leonex_rmp/quote_quote', $event->getQuote());
        $response = false;
 
-       if($this->_justifyInterest($quote)){
+       if ($this->_justifyInterest($quote)) {
            $content = $quote->getNormalizedQuote();
 
            /** @var Leonex_RiskManagementPlatform_Model_Component_Api $api */
@@ -64,15 +64,17 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
            /** @var Leonex_RiskManagementPlatform_Model_Component_Response $response */
            $response = $api->post($content);
 
-           if($this->useCaching()){
+           if ($this->useCaching()) {
                $response->setHash($quote);
                $this->_storeResponse($response);
            }
        }
-       if($this->useCaching()){
+
+       if ($this->useCaching()) {
            $response = $this->_loadResponse($quote->getQuoteHash());
        }
-       if($response){
+
+       if ($response) {
            return $response->filterPayment($event->getMethodInstance()->getCode());
        }
        return $event->getResult()->isAvailable;

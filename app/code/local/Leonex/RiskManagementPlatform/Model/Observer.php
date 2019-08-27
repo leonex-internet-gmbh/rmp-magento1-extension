@@ -25,13 +25,14 @@ class Leonex_RiskManagementPlatform_Model_Observer extends Mage_Core_Model_Abstr
         if (!$result->isAvailable) {
             return;
         }
+
         /** @var Leonex_RiskManagementPlatform_Helper_Data $helper */
         $helper = Mage::helper('leonex_rmp');
         $allowedPaymentMethods = $helper->getAllowedPaymentMethods();
         /** @var Mage_Payment_Model_Method_Abstract $paymentMethod */
         $paymentMethod = $observer->getData('method_instance');
         $paymentMethodCode = $paymentMethod->getCode();
-        if (count($allowedPaymentMethods) > 0 && !in_array($paymentMethodCode, $allowedPaymentMethods)) {
+        if (!emtpy($allowedPaymentMethods) && !in_array($paymentMethodCode, $allowedPaymentMethods)) {
             // do not aks for this payment method
             return;
         }
@@ -43,7 +44,9 @@ class Leonex_RiskManagementPlatform_Model_Observer extends Mage_Core_Model_Abstr
             return;
         }
 
-        if($connector->verifyInterest($observer, $checkingTime) || (!is_null($observer->getQuote()) && $connector->verifyInterest($observer, $observer->getQuote()->getData('checking_time')))){
+        if($connector->verifyInterest($observer, $checkingTime)
+            || ($observer->getQuote() !== null)
+            && $connector->verifyInterest($observer, $observer->getQuote()->getData('checking_time')))){
             $result->isAvailable = $connector->checkPaymentPre($observer);
         }
     }

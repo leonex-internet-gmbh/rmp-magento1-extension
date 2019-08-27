@@ -12,7 +12,7 @@
 class Leonex_RiskManagementPlatform_Model_Component_Response
 {
     /** @var string */
-    protected $status;
+    protected $_status;
 
     /** @var \stdClass */
     protected $_payments;
@@ -32,7 +32,7 @@ class Leonex_RiskManagementPlatform_Model_Component_Response
     ){
         $this->_response = $response;
         $response = json_decode($response);
-        $this->status = $response->status;
+        $this->_status = $response->status;
         $this->_payments = $response->payment_methods;
     }
 
@@ -48,14 +48,16 @@ class Leonex_RiskManagementPlatform_Model_Component_Response
      */
     public function filterPayment($payment)
     {
-        if(is_object($this->_payments->$payment)){
+        if (is_object($this->_payments->$payment)) {
             $obj = $this->_payments->$payment;
             if(!$obj->available){
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }
+
+        return false;
     }
 
     /**

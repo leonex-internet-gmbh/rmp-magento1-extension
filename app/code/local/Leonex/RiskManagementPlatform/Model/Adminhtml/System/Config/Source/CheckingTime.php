@@ -20,8 +20,13 @@ class Leonex_RiskManagementPlatform_Model_Adminhtml_System_Config_Source_Checkin
     public function toOptionArray()
     {
         return array(
-            array('value' => self::CHECKING_TIME_PRE, 'label' => Mage::helper('leonex_rmp')->__('Before payment method selection')),
-            array('value' => self::CHECKING_TIME_POST, 'label' => Mage::helper('leonex_rmp')->__('After payment method selection')),
+            array(
+                'value' => self::CHECKING_TIME_PRE,
+                'label' => Mage::helper('leonex_rmp')->__('Before payment method selection')),
+            array(
+                'value' => self::CHECKING_TIME_POST,
+                'label' => Mage::helper('leonex_rmp')->__('After payment method selection')
+            ),
         );
     }
 }

@@ -20,15 +20,15 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
     const METHOD_DELETE = 'DELETE';
 
     /** @var array|mixed */
-    protected $validMethods = [
+    protected $_validMethods = array(
         self::METHOD_POST
-    ];
+    );
 
     /** @var string */
-    protected $apiUrl;
+    protected $_apiUrl;
 
     /** @var resource  */
-    protected $cURL;
+    protected $_cURL;
 
     /**
      * Leonex_RiskManagementPlatform_Model_Component_Api constructor.
@@ -37,14 +37,14 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      */
     public function __construct(array $array)
     {
-        $this->apiUrl = rtrim($array['api_url'], '/');
+        $this->_apiUrl = rtrim($array['api_url'], '/');
 
-        $this->cURL = curl_init();
-        curl_setopt($this->cURL, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($this->cURL, CURLOPT_FOLLOWLOCATION, false);
-        curl_setopt($this->cURL, CURLOPT_HTTPHEADER, array(
+        $this->_cURL = curl_init();
+        curl_setopt($this->_cURL, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($this->_cURL, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($this->_cURL, CURLOPT_HTTPHEADER, array(
             'X-AUTH-KEY: '.$array['api_key'],
-            'Content-Type: application/json; charset=utf-8',
+            'Content-Type: application/json; charset=utf-8'
         ));
     }
 
@@ -57,22 +57,24 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
      * @throws \Exception
      */
-    protected function _call( $method = self::METHOD_GET, $data = [], $params = [])
+    protected function _call( $method = self::METHOD_GET, $data = array(), $params = array())
     {
-        if (!in_array($method, $this->validMethods)) {
-            throw new \Exception('Invalid HTTP-Methode: ' . $method);
+        if (!in_array($method, $this->_validMethods)) {
+            Mage::throwException(new \Exception('Invalid HTTP-Methode: ' . $method));
         }
+
         $queryString = '';
         if (!empty($params)) {
             $queryString = '?'.http_build_query($params);
         }
-        $url = rtrim($this->apiUrl, '?');
+
+        $url = rtrim($this->_apiUrl, '?');
         $url = $url . $queryString;
         $dataString = json_encode($data);
-        curl_setopt($this->cURL, CURLOPT_URL, $url);
-        curl_setopt($this->cURL, CURLOPT_CUSTOMREQUEST, $method);
-        curl_setopt($this->cURL, CURLOPT_POSTFIELDS, $dataString);
-        $result = curl_exec($this->cURL);
+        curl_setopt($this->_cURL, CURLOPT_URL, $url);
+        curl_setopt($this->_cURL, CURLOPT_CUSTOMREQUEST, $method);
+        curl_setopt($this->_cURL, CURLOPT_POSTFIELDS, $dataString);
+        $result = curl_exec($this->_cURL);
 
         return $this->_prepareResponse($result);
     }
@@ -84,9 +86,9 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      *
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
      */
-    public function get( $params = [])
+    public function get( $params = array())
     {
-        return $this->_call(self::METHOD_GET, [], $params);
+        return $this->_call(self::METHOD_GET, array(), $params);
     }
 
     /**
@@ -97,7 +99,7 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      *
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
      */
-    public function post($data = [], $params = [])
+    public function post($data = array(), $params = array())
     {
         return $this->_call(self::METHOD_POST, $data, $params);
     }
@@ -110,7 +112,7 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      *
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
      */
-    public function put($data = [], $params = [])
+    public function put($data = array(), $params = array())
     {
         return $this->_call(self::METHOD_PUT, $data, $params);
     }
@@ -122,9 +124,9 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
      *
      * @return Leonex_RiskManagementPlatform_Model_Component_Response
      */
-    public function delete($params = [])
+    public function delete($params = array())
     {
-        return $this->_call(self::METHOD_DELETE, [], $params);
+        return $this->_call(self::METHOD_DELETE, array(), $params);
     }
 
     /**

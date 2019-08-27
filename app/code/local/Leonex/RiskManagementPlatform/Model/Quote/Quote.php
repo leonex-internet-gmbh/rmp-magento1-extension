@@ -9,26 +9,39 @@
  */
 class Leonex_RiskManagementPlatform_Model_Quote_Quote
 {
-    /** @var Mage_Sales_Model_Quote  */
-    protected $_quote;
-    /** @var array */
-    protected $_normalizedQuote;
-    /** @var Mage_Sales_Model_Quote_Address  */
-    protected $_billingAddress;
-    /** @var Mage_Customer_Model_Customer  */
-    protected $_customer;
-    const GENDER = array(
+
+    protected $_gender = array(
         1 => 'm',
         2 => 'f'
     );
+
+    /**
+     * @var Mage_Sales_Model_Quote
+     */
+    protected $_quote;
+
+    /**
+     * @var array
+     */
+    protected $_normalizedQuote;
+
+    /**
+     * @var Mage_Sales_Model_Quote_Address
+     */
+    protected $_billingAddress;
+
+    /**
+     * @var Mage_Customer_Model_Customer
+     */
+    protected $_customer;
+
     /**
      * Leonex_RiskManagementPlatform_Model_Quote_Quote constructor.
      *
      * @param Mage_Sales_Model_Quote $quote
      */
-    public function __construct(
-        Mage_Sales_Model_Quote $quote
-    ){
+    public function __construct(Mage_Sales_Model_Quote $quote)
+    {
         $this->_quote = $quote;
         $this->_billingAddress = $quote->getBillingAddress();
         $this->_customer = $quote->getCustomer();
@@ -67,7 +80,6 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     /**
      * Adjust the data from the billing address.
      *
-     * @todo implement birthName
      * @return array
      */
     protected function _getBillingAddress()
@@ -75,11 +87,11 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
         $address = $this->_billingAddress;
 
         return array(
-            'gender'               => self::GENDER[$this->_quote->getCustomerGender()],//$customer->getOrigData('gender')
+            'gender'               => $this->_gender[$this->_quote->getCustomerGender()],
             'lastName'             => $address->getLastname(),
             'firstName'            => $address->getFirstname(),
             'dateOfBirth'          => substr($this->_quote->getCustomerDob(), 0, 10),
-            'birthName'            => $address->getLastname(),//$billingAddress->lastname,
+            'birthName'            => $address->getLastname(),
             'street'               => $address->getStreet(),
             'zip'                  => $address->getPostcode(),
             'city'                 => $address->getCity(),
@@ -145,7 +157,6 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
 
     /**
      * Get the customer history from the quote model.
-     * @todo implement History
      * @return array
      */
     protected function _getOrderHistory()
@@ -164,19 +175,6 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
      */
     public function getQuoteHash()
     {
-        return md5(serialize($this->_normalizedQuote));
-    }
-
-    /**
-     * compare a given md5 with a new generated from the quote.
-     *
-     * @param $hash
-     *
-     * @return bool
-     */
-    public function hashCompare($hash)
-    {
-        $return = $hash == $this->getQuoteHash();
-        return $return;
+        return hash('sh256', json_encode($this->_normalizedQuote));
     }
 }
