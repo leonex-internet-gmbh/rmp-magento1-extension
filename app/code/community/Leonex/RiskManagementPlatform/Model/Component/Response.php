@@ -50,7 +50,7 @@ class Leonex_RiskManagementPlatform_Model_Component_Response
     {
         if (is_object($this->_payments->$payment)) {
             $obj = $this->_payments->$payment;
-            if(!$obj->available){
+            if (!$obj->available) {
                 return false;
             } else {
                 return true;

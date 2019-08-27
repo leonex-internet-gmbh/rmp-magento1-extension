@@ -123,8 +123,8 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
         $quoteItems = array();
 
         /** @var Mage_Sales_Model_Quote_Item $item*/
-        foreach ($this->_quote->getAllItems() as $item){
-            if(is_null($item->getParentItemId())){
+        foreach ($this->_quote->getAllItems() as $item) {
+            if ($item->getParentItemId() === null) {
                 $quoteItems[] = array(
                     'sku' => $item->getSku(),
                     'quantity' => $item->getQty(),
@@ -133,6 +133,7 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
                 );
             }
         }
+
         return $quoteItems;
     }
 
@@ -149,6 +150,7 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
                 'email' => $this->_billingAddress->getEmail()
             );
         }
+
         return array(
             'number' => $customer->getId(),
             'email' => $customer->getData('email')

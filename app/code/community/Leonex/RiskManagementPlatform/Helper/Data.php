@@ -20,8 +20,7 @@ class Leonex_RiskManagementPlatform_Helper_Data extends Mage_Core_Helper_Abstrac
     {
         if ($flag) {
             return Mage::getStoreConfigFlag($key, $store);
-        }
-        else {
+        } else {
             return Mage::getStoreConfig($key, $store);
         }
     }
@@ -93,6 +92,7 @@ class Leonex_RiskManagementPlatform_Helper_Data extends Mage_Core_Helper_Abstrac
         if (!$methods) {
             return array();
         }
+
         return explode(',', $methods);
     }
 }

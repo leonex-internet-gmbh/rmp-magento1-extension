@@ -77,6 +77,7 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
        if ($response) {
            return $response->filterPayment($event->getMethodInstance()->getCode());
        }
+
        return $event->getResult()->isAvailable;
    }
 
@@ -103,6 +104,7 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
                }
            }
        }
+
        return false;
    }
 
@@ -135,9 +137,10 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
      */
     protected function _justifyInterest(Leonex_RiskManagementPlatform_Model_Quote_Quote $quote)
     {
-        if(!$this->useCaching()){
+        if (!$this->useCaching()) {
             return true;
         }
+
         return !(bool)$this->_loadResponse($quote->getQuoteHash());
     }
 
