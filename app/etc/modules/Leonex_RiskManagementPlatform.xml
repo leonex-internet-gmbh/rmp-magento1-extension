@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Leonex_RiskManagementPlatform>
-            <codePool>local</codePool>
+            <codePool>community</codePool>
             <active>true</active>
             <depends/>
         </Leonex_RiskManagementPlatform>
