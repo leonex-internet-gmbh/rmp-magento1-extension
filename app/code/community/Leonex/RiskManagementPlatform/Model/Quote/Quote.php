@@ -81,7 +81,15 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
         $address = $this->_billingAddress;
 
         return array(
-            'gender' => $this->_gender[$this->_quote->getCustomerGender()], 'lastName' => $address->getLastname(), 'firstName' => $address->getFirstname(), 'dateOfBirth' => substr($this->_quote->getCustomerDob(), 0, 10), 'birthName' => $address->getLastname(), 'street' => $address->getStreet(), 'zip' => $address->getPostcode(), 'city' => $address->getCity(), 'country' => strtolower($address->getCountryId()),
+            'gender' => $this->_gender[$this->_quote->getCustomerGender()],
+            'lastName' => $address->getLastname(),
+            'firstName' => $address->getFirstname(),
+            'dateOfBirth' => substr($this->_quote->getCustomerDob(), 0, 10),
+            'birthName' => $address->getLastname(),
+            'street' => $address->getStreet(),
+            'zip' => $address->getPostcode(),
+            'city' => $address->getCity(),
+            'country' => strtolower($address->getCountryId())
         );
     }
 
