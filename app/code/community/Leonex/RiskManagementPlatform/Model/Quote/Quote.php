@@ -86,7 +86,7 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
             'firstName' => $address->getFirstname(),
             'dateOfBirth' => substr($this->_quote->getCustomerDob(), 0, 10),
             'birthName' => $address->getLastname(),
-            'street' => $address->getStreet(),
+            'street' => $address->getStreet(1),
             'zip' => $address->getPostcode(),
             'city' => $address->getCity(),
             'country' => strtolower($address->getCountryId())
