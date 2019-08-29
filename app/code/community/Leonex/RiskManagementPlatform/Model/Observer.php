@@ -32,7 +32,7 @@ class Leonex_RiskManagementPlatform_Model_Observer extends Mage_Core_Model_Abstr
         /** @var Mage_Payment_Model_Method_Abstract $paymentMethod */
         $paymentMethod = $observer->getData('method_instance');
         $paymentMethodCode = $paymentMethod->getCode();
-        if (!emtpy($allowedPaymentMethods) && !in_array($paymentMethodCode, $allowedPaymentMethods)) {
+        if (!empty($allowedPaymentMethods) && !in_array($paymentMethodCode, $allowedPaymentMethods)) {
             // do not aks for this payment method
             return;
         }
