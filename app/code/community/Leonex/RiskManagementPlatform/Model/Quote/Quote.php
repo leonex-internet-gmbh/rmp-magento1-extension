@@ -10,10 +10,10 @@
 class Leonex_RiskManagementPlatform_Model_Quote_Quote
 {
 
-    protected $_gender
-        = array(
-            1 => 'm', 2 => 'f'
-        );
+    protected $_gender = array(
+        1 => 'm',
+        2 => 'f'
+    );
 
     /**
      * @var Mage_Sales_Model_Quote
