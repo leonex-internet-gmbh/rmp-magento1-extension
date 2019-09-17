@@ -1,0 +1,19 @@
+{
+  "name": "leonex/magento1-module-rmp-connector",
+  "description": "This Extension integrates a credit check and more made by the LEONEX Risk Management Platform into your order process. Extensive configuration and evaluation options is provided in the Platform",
+  "keywords":    ["magento", "magento1", "credit rating", "credit check", "fraud protection", "leonex", "rmp"],
+  "type": "magento1-module",
+  "version": "1.0.0",
+  "license": [
+    "OSL-3.0"
+  ],
+  "require": {
+    "magento-hackathon/magento-composer-installer":"*"
+  },
+  "extra": {
+    "map": [
+      ["app/code/community/Leonex/RiskManagementPlatform/*","app/code/community/Leonex/RiskManagementPlatform/"],
+      ["app/etc/modules/Leonex_RiskManagementPlatform.xml","app/etc/modules/"]
+    ]
+  }
+}
