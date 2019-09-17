@@ -7,5 +7,5 @@ This Extension integrates a credit check and more made by the LEONEX Risk Manage
 ### Installation via Source
 You can install the latest release from Github (either using modman/composer or manual installation). 
 ```
-composer require leonex/magento-module-rmp-connector
+composer require leonex/magento1-module-rmp-connector
 ```
