@@ -48,6 +48,11 @@ class Leonex_RiskManagementPlatform_Helper_Connector extends Mage_Core_Helper_Ab
 
         /** @var Leonex_RiskManagementPlatform_Model_Quote_Quote $quote */
         $quote = Mage::getModel('leonex_rmp/quote_quote', $event->getQuote());
+
+        if (!$quote->isAddressProvided()) {
+            return $event->getResult()->isAvailable;
+        }
+
         $response = false;
 
         if ($this->_justifyInterest($quote)) {

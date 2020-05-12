@@ -49,6 +49,18 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     }
 
     /**
+     * Check whether a billing address has been provided
+     * @return bool
+     */
+    public function isAddressProvided()
+    {
+        $billingAddress = $this->_billingAddress;
+
+        return $billingAddress->getLastname()
+            || $billingAddress->getFirstname();
+    }
+
+    /**
      * Return the normalized quote and trigger a filter event.
      *
      * @return array
