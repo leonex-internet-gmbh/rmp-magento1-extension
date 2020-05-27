@@ -78,8 +78,14 @@ class Leonex_RiskManagementPlatform_Model_Component_Api
         curl_setopt($this->_cURL, CURLOPT_URL, $url);
         curl_setopt($this->_cURL, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($this->_cURL, CURLOPT_POSTFIELDS, $dataString);
-        $result = curl_exec($this->_cURL);
+        curl_setopt($this->_cURL, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($this->_cURL, CURLOPT_SSL_VERIFYPEER, 0);
 
+        $result = curl_exec($this->_cURL);
+        if ($result === false) {
+            $error = curl_error($this->_cURL);
+
+        }
         return $this->_prepareResponse($result);
     }
 

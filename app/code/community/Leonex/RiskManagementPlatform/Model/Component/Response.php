@@ -57,9 +57,9 @@ class Leonex_RiskManagementPlatform_Model_Component_Response
             } else {
                 return true;
             }
+        } else {
+            return true;
         }
-
-        return false;
     }
 
     /**

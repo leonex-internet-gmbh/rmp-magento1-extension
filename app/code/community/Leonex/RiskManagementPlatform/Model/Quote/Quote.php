@@ -79,7 +79,13 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     protected function _normalizeQuote()
     {
         return array(
-            'customerSessionId' => Mage::getSingleton("core/session")->getEncryptedSessionId(), 'justifiableInterest' => Leonex_RiskManagementPlatform_Helper_Connector::JUSTIFIABLE_INTEREST_BUSINESS_INITIATION, 'consentClause' => true, 'billingAddress' => $this->_getBillingAddress(), 'quote' => $this->_getQuote(), 'customer' => $this->_getCustomerData(), 'orderHistory' => $this->_getOrderHistory()
+            'customerSessionId' => Mage::getSingleton("core/session")->getEncryptedSessionId(),
+            'justifiableInterest' => Leonex_RiskManagementPlatform_Helper_Connector::JUSTIFIABLE_INTEREST_BUSINESS_INITIATION,
+            'consentClause' => true,
+            'billingAddress' => $this->_getBillingAddress(),
+            'quote' => $this->_getQuote(),
+            'customer' => $this->_getCustomerData(),
+            'orderHistory' => $this->_getOrderHistory()
         );
     }
 
@@ -159,6 +165,70 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     }
 
     /**
+     * Get the number of canceled orders
+     *
+     * @return int
+     */
+    protected function getNumberOfCanceledOrders()
+    {
+        return $this->getNumberOf([Mage_Sales_Model_Order::STATE_CANCELED]);
+    }
+
+    /**
+     * Get the number of completed orders
+     *
+     * @return int
+     */
+    protected function getNumberOfCompletedOrders()
+    {
+        return $this->getNumberOf([Mage_Sales_Model_Order::STATE_COMPLETE]);
+    }
+
+    /**
+     * Get the number of unpaid orders
+     *
+     * @return int
+     */
+    protected function getNumberOfUnpaidOrders()
+    {
+        return $this->getNumberOf([
+            Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
+            Mage_Sales_Model_Order::STATE_NEW,
+            Mage_Sales_Model_Order::STATE_HOLDED,
+            Mage_Sales_Model_Order::STATE_PROCESSING
+        ]);
+    }
+
+    /**
+     * Get The Number of orders by given state
+     *
+     * @param array $states
+     *
+     * @return int
+     */
+    protected function getNumberOf(array $states)
+    {
+        $col = Mage::getResourceModel('sales/order_collection');
+        $col->addFieldToSelect('entity_id');
+        $col->addFieldToFilter('state', $states);
+        if ($this->_customer && $this->_customer->getId()) {
+            $col->addFieldToFilter(array(
+                'customer_email',
+                'customer_id',
+            ),
+            array(
+                array('like' => $this->_billingAddress->getEmail()),
+                array('like' => $this->_customer->getId()),
+            )
+        );
+        } else {
+            $col->addFieldToFilter('customer_email', array('like' => $this->_billingAddress->getEmail()));
+        }
+
+        return $col->getSize();
+    }
+
+    /**
      * Get the customer history from the quote model.
      *
      * @return array
@@ -166,7 +236,9 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     protected function _getOrderHistory()
     {
         return array(
-            'numberOfCanceledOrders' => 0, 'numberOfCompletedOrders' => 0, 'numberOfUnpaidOrders' => 0, 'numberOfOutstandingOrders' => 0,
+            'numberOfCanceledOrders' => $this->getNumberOfCanceledOrders(),
+            'numberOfCompletedOrders' => $this->getNumberOfCompletedOrders(),
+            'numberOfUnpaidOrders' => $this->getNumberOfUnpaidOrders(),
         );
     }
 

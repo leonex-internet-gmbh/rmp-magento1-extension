@@ -40,18 +40,6 @@ class Leonex_RiskManagementPlatform_Helper_Data extends Mage_Core_Helper_Abstrac
     }
 
     /**
-     * Check if response shall be cached
-     *
-     * @param null $store
-     *
-     * @return bool
-     */
-    public function useCache($store = null)
-    {
-        return (bool)$this->getConfig('leonex_rmp/settings/enable_cache', true, $store);
-    }
-
-    /**
      * Get time of checking from plugin config
      * Pre | Post
      *
