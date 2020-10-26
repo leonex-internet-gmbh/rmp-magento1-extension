@@ -44,6 +44,7 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     {
         $this->_quote = $quote;
         $this->_billingAddress = $quote->getBillingAddress();
+        $this->_shippingAddress = $quote->getShippingAddress();
         $this->_customer = $quote->getCustomer();
         $this->_normalizedQuote = $this->_normalizeQuote();
     }
@@ -80,9 +81,10 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     {
         return array(
             'customerSessionId' => Mage::getSingleton("core/session")->getEncryptedSessionId(),
-            'justifiableInterest' => Leonex_RiskManagementPlatform_Helper_Connector::JUSTIFIABLE_INTEREST_BUSINESS_INITIATION,
-            'consentClause' => true,
-            'billingAddress' => $this->_getBillingAddress(),
+            'justifiableInterest'  => Leonex_RiskManagementPlatform_Helper_Connector::JUSTIFIABLE_INTEREST_BUSINESS_INITIATION,
+            'consentClause'        => true,
+            'billingAddress'       => $this->_getBillingAddress(),
+            'shippingAddress'       => $this->_getShippingAddress(),
             'quote' => $this->_getQuote(),
             'customer' => $this->_getCustomerData(),
             'orderHistory' => $this->_getOrderHistory()
@@ -112,6 +114,28 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     }
 
     /**
+     * Adjust the data from the shipping address.
+     *
+     * @todo implement birthName
+     * @return array
+     */
+    protected function _getShippingAddress()
+    {
+        $address = $this->_shippingAddress;
+
+        return array(
+            'gender'               => self::GENDER[$this->_quote->getCustomerGender()],//$customer->getOrigData('gender')
+            'lastName'             => $address->getLastname(),
+            'firstName'            => $address->getFirstname(),
+            'street'               => $address->getStreet1(),
+            'street2'              => $address->getStreet2(), // optional (needed for Packstation)
+            'zip'                  => $address->getPostcode(),
+            'city'                 => $address->getCity(),
+            'country'              => strtolower($address->getCountryId()),
+        );
+    }
+
+    /**
      * Get the item quote.
      * Includes the total amount and a array of basket items.
      *
@@ -120,7 +144,8 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     protected function _getQuote()
     {
         return array(
-            'items' => $this->_getQuoteItems(), 'totalAmount' => $this->_quote->getGrandTotal(),
+            'items' => $this->_getQuoteItems(),
+            'totalAmount' => $this->_quote->getGrandTotal(),
         );
     }
 
@@ -133,11 +158,14 @@ class Leonex_RiskManagementPlatform_Model_Quote_Quote
     {
         $quoteItems = array();
 
-        /** @var Mage_Sales_Model_Quote_Item $item */
-        foreach ($this->_quote->getAllItems() as $item) {
-            if ($item->getParentItemId() === null) {
+        /** @var Mage_Sales_Model_Quote_Item $item*/
+        foreach ($this->_quote->getAllItems() as $item){
+            if(is_null($item->getParentItemId())){
                 $quoteItems[] = array(
-                    'sku' => $item->getSku(), 'quantity' => $item->getQty(), 'price' => (float)$item->getPriceInclTax(), 'rowTotal' => (float)$item->getRowTotal()
+                    'sku' => $item->getSku(),
+                    'quantity' => $item->getQty(),
+                    'price' => (float)$item->getPriceInclTax(),
+                    'rowTotal' => (float)$item->getRowTotal()
                 );
             }
         }
